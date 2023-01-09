@@ -1,6 +1,10 @@
-import React, { createContext, useReducer } from "react"
+import React, { createContext, useReducer, useState, useEffect} from "react"
 import questions from "../data"
+
 import { shuffleAnswers } from "../helpers"
+import { useRef } from "react"
+
+
 
 const initialState = {
   questions,
@@ -10,6 +14,8 @@ const initialState = {
   showResults: false,
   reading: true,
   correctAnswersCount: 0,
+  progressBar: true,
+  timer: 0,
 }
 
 const reducer = (state, action) => {
@@ -27,10 +33,12 @@ const reducer = (state, action) => {
         state.questions[state.currentQuestionIndex].correctAnswer
           ? state.correctAnswersCount + 1
           : state.correctAnswersCount
+      const progressBar = false
       return {
         ...state,
         currentAnswer: action.payload,
         correctAnswersCount,
+        progressBar,
       }
     }
     case "NEXT_QUESTION": {
@@ -42,12 +50,14 @@ const reducer = (state, action) => {
       const answers = showResults
         ? []
         : shuffleAnswers(state.questions[currentQuestionIndex])
+      const progressBar = true
       return {
         ...state,
         currentAnswer: "",
         showResults,
         currentQuestionIndex,
         answers,
+        progressBar,
       }
     }
     case "RESTART": {
@@ -61,6 +71,7 @@ const reducer = (state, action) => {
 export const QuizContext = createContext()
 
 export const QuizProvider = ({ children }) => {
+
   const value = useReducer(reducer, initialState)
 
   return <QuizContext.Provider value={value}>{children}</QuizContext.Provider>
