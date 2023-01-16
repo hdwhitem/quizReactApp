@@ -2,11 +2,27 @@ import Answer from "./Answer"
 import { useContext, useRef } from "react"
 import { QuizContext } from "../contexts/quiz"
 import { useState } from "react";
+import { useEffect } from "react";
 
 const Question = () => {
   const [quizState, dispatch] = useContext(QuizContext)
   const currentQuestion = quizState.questions[quizState.currentQuestionIndex]
   const active = quizState.progressBar
+  const timer = useRef(null)
+
+  function goToNextQuestion() {
+
+    console.log("next question 10s. ",timer.current)
+    dispatch({ type: "NEXT_QUESTION" })
+    if(timer.current){
+      clearTimeout(timer.current)
+    }
+  }
+
+  useEffect(()=>{
+      timer.current=setTimeout(goToNextQuestion, 10*1000)
+  })
+
 
   return (
     <div>

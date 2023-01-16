@@ -15,7 +15,6 @@ const initialState = {
   reading: true,
   correctAnswersCount: 0,
   progressBar: true,
-  timer: 0,
 }
 
 const reducer = (state, action) => {
