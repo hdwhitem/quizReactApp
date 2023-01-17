@@ -14,7 +14,8 @@ const initialState = {
   showResults: false,
   reading: true,
   correctAnswersCount: 0,
-  progressBar: true,
+  progressBar: "shim-red active",
+  stop: false
 }
 
 const reducer = (state, action) => {
@@ -32,12 +33,14 @@ const reducer = (state, action) => {
         state.questions[state.currentQuestionIndex].correctAnswer
           ? state.correctAnswersCount + 1
           : state.correctAnswersCount
-      const progressBar = false
+      const progressBar = "shim-red"
+      const stop = true
       return {
         ...state,
         currentAnswer: action.payload,
         correctAnswersCount,
         progressBar,
+        stop,
       }
     }
     case "NEXT_QUESTION": {
@@ -49,7 +52,8 @@ const reducer = (state, action) => {
       const answers = showResults
         ? []
         : shuffleAnswers(state.questions[currentQuestionIndex])
-      const progressBar = true
+      const progressBar = "shim-red active"
+      const stop = false
       return {
         ...state,
         currentAnswer: "",
@@ -57,6 +61,7 @@ const reducer = (state, action) => {
         currentQuestionIndex,
         answers,
         progressBar,
+        stop,
       }
     }
     case "RESTART": {
