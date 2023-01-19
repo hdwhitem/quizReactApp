@@ -131,7 +131,7 @@ div {
   height: 5px;
 }
 .shim-red.active {
-  animation: progress 10s linear;
+  animation: progress 5s linear;
 }
 
 @keyframes progress {
