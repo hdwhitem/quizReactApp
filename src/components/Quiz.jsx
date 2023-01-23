@@ -35,14 +35,14 @@ const Quiz = () => {
             {quizState.questions.length}
           </div>
           <Question />
-          {quizState.currentAnswer && (
+          {/*{quizState.currentAnswer && (
             <div
               onClick={() => dispatch({ type: "NEXT_QUESTION" })}
               className="next-button"
             >
               Next question
             </div>
-          )}
+          )}*/}
         </div>
       )}
     </div>

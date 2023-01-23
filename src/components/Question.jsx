@@ -9,10 +9,12 @@ const Question = () => {
   const currentQuestion = quizState.questions[quizState.currentQuestionIndex]
   const [progressBar, setProgressBar] = useState(quizState.progressBar)
   const [seconds, setSeconds] = useState(0)
+  const [stop, setStop] = useState(quizState.stop)
 
   useEffect( ()=>{
+    setStop(quizState.stop)
     const interval = setInterval(()=>{
-      if(seconds < 5){
+      if(seconds < 5 && !stop){
         setProgressBar("shim-red active")
         setSeconds(prev=>prev +1)
       }else if (seconds ==5){
@@ -20,20 +22,24 @@ const Question = () => {
         setSeconds(0)
         setProgressBar("shim-red")
         dispatch({ type: "NEXT_QUESTION" })
+      } else if (stop){
+        setSeconds(prev=>prev +1)
+        setProgressBar("shim-red")
       }
     },1000)
 
     return() =>{
-      clearInterval(interval)    
+      clearInterval(interval) 
     }
 
-  },[seconds])
+  })
+
 
   return (
     <div>
-      <div className="flex flex-col space-y-3">{seconds}
+      <div className="flex flex-col space-y-3">{!stop &&(seconds)}
         <div className="relative w-full bg-gray-200 shim-red">
-          <div className={`top-0 h-4 shim-red  ${progressBar}`} > </div>
+          <div className={`top-0 h-4  ${progressBar}`} > </div>
         </div>
      </div>
       <div className="question">{currentQuestion.question}</div>
